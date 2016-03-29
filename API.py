@@ -3,6 +3,7 @@ from APIResponse import APIResponse
 from Errors import *
 import json
 
+
 class API:
     def __init__(self):
         self.api_endpoint = "http://localhost:8545/"
@@ -11,7 +12,7 @@ class API:
         data = {"jsonrpc": "2.0",
                 "method": method,
                 "params": params,
-                "id": 1543} # TODO make nonce
+                "id": 1543}  # TODO make nonce
 
         r = requests.post(self.api_endpoint, json=data)
         if r.status_code == requests.codes.ok:
@@ -29,7 +30,6 @@ class API:
             return APIResponse(json_response, 0)
         except BadResponseError:
             return APIResponse({}, 3, "Internal error")
-
 
     def getGasPrice(self):
         response = self.api_request("eth_gasPrice", [])
