@@ -5,6 +5,9 @@ contract_address = "0xac64a5168144734f0d688D689c730A519844D0c5"
 api = API()
 
 def logSale(bitcoin_tx_id, amount):
+    if len(bitcoin_tx_id) != 64:
+        print('TX Id must contain 64 symbols')
+        return
     definition = "newSale(bytes32,uint256)"
     method_id = api.getMethodId(definition)
     amount = abs(int(amount * (10 ** 8)))
