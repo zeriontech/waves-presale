@@ -34,19 +34,19 @@ class API:
     def getGasPrice(self):
         response = self.api_request("eth_gasPrice", [])
         response.response_dict["result"] = int(response.response_dict["result"], 16)
-        return str(response)
+        return response
 
     def getAccountByAddress(self, address):
         response = self.api_request("eth_getBalance", [address, "latest"])
         ans = APIResponse({"address": address,
                            "balance": int(response.response_dict["result"], 16)})
-        return str(ans)
+        return ans
 
     def getLatestBlock(self):
         response = self.api_request("eth_getBlockByNumber", ["latest", False])
         ans = APIResponse({"number": int(response.response_dict["result"]["number"], 16),
                            "hash": response.response_dict["result"]["hash"]})
-        return str(ans)
+        return ans
 
     def getSHA256(self, string):
         b = bytearray()
@@ -60,4 +60,14 @@ class API:
         hash = self.getSHA256(definition)
         return hash[2:10]
 
+    def send_transaction(self, from_address, to_address, gas, gasPrice, value, data):
+        response = self.api_request("eth_sendTransaction", [{"from": from_address,
+                                                            "to": to_address,
+                                                            "gas": gas,
+                                                            "gasPrice": gasPrice,
+                                                            "value": value,
+                                                            "data": data}])
+        print(response)
+        ans = APIResponse({"hash": response.response_dict["result"]})
+        return ans
 

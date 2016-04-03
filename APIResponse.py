@@ -15,3 +15,6 @@ class APIResponse:
         if self.status != 0:
             self.response_dict["error"] = self.error
         return json.dumps(self.response_dict, sort_keys=True)
+
+    def __getitem__(self, item):
+        return self.response_dict[item]
