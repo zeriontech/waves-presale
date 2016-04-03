@@ -47,3 +47,17 @@ class API:
         ans = APIResponse({"number": int(response.response_dict["result"]["number"], 16),
                            "hash": response.response_dict["result"]["hash"]})
         return str(ans)
+
+    def getSHA256(self, string):
+        b = bytearray()
+        b.extend(map(ord, string))
+        byte_string = "0x" + b.hex()
+        response = self.api_request("web3_sha3", [byte_string])
+        return response.response_dict["result"]
+
+    #tested on samples
+    def getMethodId(self, definition):
+        hash = self.getSHA256(definition)
+        return hash[2:10]
+
+

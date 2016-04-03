@@ -4,29 +4,29 @@ contract WavesPresale {
     struct Sale
     {
         bytes32 txid;   
-        uint amount;
+        uint128 amount;
         uint date;
     }
     
     Sale[] public sales;
-    uint index;
-    
+    uint32 public numberOfSales;
+    uint128 public totalTokens;
+
     function WavesPresale() {
         owner = msg.sender;
-        index = 0;
+        numberOfSales = 0;
     }
 
-    function setProposal(bytes32 txid, uint amount) {
+    function newSale(bytes32 txid, uint128 amount) {
         if (msg.sender != owner) return;
-        
+
         sales.push(Sale({
                 txid: txid,
                 amount: amount,
                 date: now
             }));
-        index += 1;
+        numberOfSales += 1;
+        totalTokens += amount;
     }
     
 }
-
-
