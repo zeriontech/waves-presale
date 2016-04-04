@@ -2,6 +2,7 @@ import requests
 from APIResponse import APIResponse
 from Errors import *
 import json
+import binascii
 
 
 class API:
@@ -51,7 +52,8 @@ class API:
     def getSHA256(self, string):
         b = bytearray()
         b.extend(map(ord, string))
-        byte_string = "0x" + b.hex()
+        bytes_string = str(binascii.b2a_hex(b), 'ascii')
+        byte_string = "0x" + bytes_string
         response = self.api_request("web3_sha3", [byte_string])
         return response.response_dict["result"]
 
