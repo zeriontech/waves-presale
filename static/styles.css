@@ -1,0 +1,15 @@
+form {
+  text-align: center;
+}
+
+#result {
+    width: 50%;
+    margin:0 auto;
+    height: auto;
+}
+
+#info {
+    width: 50%;
+    margin:0 auto;
+    height: auto;
+}

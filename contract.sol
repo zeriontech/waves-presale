@@ -35,20 +35,8 @@ contract WavesPresale {
         totalTokens += amount;
     }
 
-    function getNumberOfSales() constant returns (uint32) {
-    	return numberOfSales;
-    }
-
-    function getSales() constant returns (Sale[]) {
-    	return sales;
-    }
-
     function getSale(uint32 num) constant returns (Sale) {
     	return sales[num];
-    }
-
-    function getTotalTokens() constant returns (uint) {
-    	return totalTokens;
     }
 
     function () {

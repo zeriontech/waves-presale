@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Waves Presale</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+</head>
+
+<body onload="loadInfo()">
+<div id="info"></div>
+<form>
+    Enter the number of sale to get detailed information:<br>
+    <input type="text" id="numberOfSale"><br>
+    <input type="button" onclick="get_sale()" value="Get info">
+</form>
+<br>
+<div id="result"></div>
+<script>
+    function loadInfo() {
+        $.get( "get_info/", function( data ) {
+             if (data.status == "OK") {
+                 $("#info").html("<b>number of sales: </b>" + data.numberOfSales + "<br>" +
+                                 "<b>total number of tokens: </b>" + data.totalTokens + "<br>");
+             } else {
+                  $("#info").html("Sorry, something went wrong. Try to reload the page.")
+             }
+        });
+    }
+
+    function get_sale() {
+        var numberOfSale = $('#numberOfSale').val();
+        $.get( "get_sale/?id=" + numberOfSale, function(data) {
+             if (data.status == "OK") {
+                 $("#result").html("<b>Cool!</b><br>");
+                 $("#result").append("Some message");
+             } else {
+                  $("#info").html("<b>Wrong number of sale</b>")
+             }
+        });
+
+    }
+</script>
+</body>
+</html>

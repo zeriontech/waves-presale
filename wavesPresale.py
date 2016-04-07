@@ -1,10 +1,9 @@
 #!/usr/bin/env python3.4
 from API import API
+from configs import BASE_ADDRESS, CONTRACT_ADDRESS
 import binascii
 import sys
 
-base_address = "0x82e1c8c4c38f5c0767f7c426e235f194010b71e9"
-contract_address = "0xac64a5168144734f0d688D689c730A519844D0c5"
 api = API()
 
 
@@ -18,7 +17,7 @@ def logSale(bitcoin_tx_id, amount, timestamp):
     data = "0x" + method_id + bitcoin_tx_id + uint_to_bytes_string(amount)\
            + uint_to_bytes_string(timestamp)
     gas_price = hex(api.getGasPrice()["result"])
-    response = api.send_transaction(base_address, contract_address,
+    response = api.send_transaction(BASE_ADDRESS, CONTRACT_ADDRESS,
                                     gas=hex(200000), gasPrice=gas_price,
                                     value=hex(0), data=data)
     print(str(response))

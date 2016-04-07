@@ -57,6 +57,16 @@ class API:
         response = self.api_request("web3_sha3", [byte_string])
         return response.response_dict["result"]
 
+    def getStorageAt(self, data, quantitty, tag):
+        response = self.api_request("eth_getStorageAt", [data, quantitty, tag])
+        return response
+
+    def getInfo(self, from_address, to_address, data):
+        response = self.api_request("eth_call", [{"from": from_address,
+                                                  "to": to_address,
+                                                  "data": data}])
+        return APIResponse({"data": response.response_dict["result"]})
+
     #tested on samples
     def getMethodId(self, definition):
         hash = self.getSHA256(definition)
@@ -72,4 +82,3 @@ class API:
         print(response)
         ans = APIResponse({"hash": response.response_dict["result"]})
         return ans
-
