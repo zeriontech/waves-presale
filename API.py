@@ -64,11 +64,11 @@ class API:
 
     def send_transaction(self, from_address, to_address, gas, gasPrice, value, data):
         response = self.api_request("eth_sendTransaction", [{"from": from_address,
-                                                            "to": to_address,
-                                                            "gas": gas,
-                                                            "gasPrice": gasPrice,
-                                                            "value": value,
-                                                            "data": data}])
+                                                             "to": to_address,
+                                                             "gas": gas,
+                                                             "gasPrice": gasPrice,
+                                                             "value": value,
+                                                             "data": data}])
         print(response)
         ans = APIResponse({"hash": response.response_dict["result"]})
         return ans
