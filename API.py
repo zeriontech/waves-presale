@@ -57,8 +57,8 @@ class API:
         response = self.api_request("web3_sha3", [byte_string])
         return response.response_dict["result"]
 
-    def getStorageAt(self, data, quantitty, tag):
-        response = self.api_request("eth_getStorageAt", [data, quantitty, tag])
+    def getStorageAt(self, data, quantity, block="latest"):
+        response = self.api_request("eth_getStorageAt", [data, quantity, block])
         return response
 
     def getInfo(self, from_address, to_address, data):

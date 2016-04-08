@@ -8,13 +8,14 @@ contract_address = "0x64fddDcbD0ddB00aeA47eC63Ce6376300e76B11E"
 # response = api.getStorageAt(contract_address, "0x0", "0x1")
 # print(response)
 
-tokens = "0x" + api.getMethodId("totalTokens()")
-sales = "0x" + api.getMethodId("numberOfSales()")
-totalTokens, numberOfSales = -1, -1
-responseTokens = api.getInfo(base_address, contract_address, tokens)
-if responseTokens.status == 0:
-    totalTokens = int(responseTokens.response_dict["data"], 0) / 10**8
-responseSales = api.getInfo(base_address, contract_address, sales)
-if responseSales.status == 0:
-    numberOfSales = int(responseSales.response_dict["data"], 0)
-print(totalTokens, numberOfSales)
+# sales = "0x" + api.getMethodId("totalTokens()")
+# responseSales = api.getInfo(base_address, contract_address, sales)
+# if responseSales.status == 0:
+#     numberOfSales = responseSales.response_dict["data"]
+# print(numberOfSales)
+
+# 0 - owner
+# 1 - number of sales ?
+# 2 - number of sales ?
+# 3 - total tokens
+print(api.getStorageAt(contract_address, "0x011"))

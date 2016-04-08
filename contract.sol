@@ -35,8 +35,16 @@ contract WavesPresale {
         totalTokens += amount;
     }
 
-    function getSale(uint32 num) constant returns (Sale) {
-    	return sales[num];
+    function getSaleTxId(uint32 num) constant returns (bytes32) {
+    	return sales[num].txid;
+    }
+
+    function getSaleAmount(uint32 num) constant returns (uint) {
+    	return sales[num].amount;
+    }
+
+    function getSaleDate(uint32 num) constant returns (uint) {
+    	return sales[num].date;
     }
 
     function () {
