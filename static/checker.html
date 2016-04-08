@@ -24,7 +24,7 @@
             <input type="text" id="numberOfSale" value="0">
             <input type="button" onclick="get_sale()" value="Get info">
         </form>
-        <div style="padding-left: 10pt">Transactin Id:</div>
+        <div style="padding-left: 10pt">Transaction Id:</div>
         <div class="hash">None</div>
         <div style="padding-left: 10pt" id="amount">Amount: None</div>
         <div style="padding-left: 10pt" id="date">Date: None</div>
@@ -45,9 +45,9 @@
         var numberOfSale = $('#numberOfSale').val();
         $.get( "get_sale/?id=" + numberOfSale, function(data) {
              if (data.status == "OK") {
-                 $(".hash").html("0xHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-                 $("#amount").html("Amount: 0.012345");
-                 $("#date").html("Date: 7.03.2016");
+                 $(".hash").html(data.tx_id);
+                 $("#amount").html("Amount: " + data.amount);
+                 $("#date").html("Date: " + data.date);
              }
         });
 
