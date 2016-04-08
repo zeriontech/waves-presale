@@ -2,14 +2,27 @@ form {
   text-align: center;
 }
 
-#result {
-    width: 50%;
-    margin:0 auto;
-    height: auto;
+.title {
+    height: 16pt;
+    padding-left: 20pt;
+    background-color: lightgray;
 }
 
-#info {
-    width: 50%;
-    margin:0 auto;
-    height: auto;
+.value {
+    height: 30pt;
+    line-height: 30pt;
+    padding-left: 40pt;
+    font-size: large;
 }
+
+.hash {
+    width: auto;
+    height:26pt;
+    line-height: 20pt;
+    padding: 2pt;
+    border: 1px solid #bed5cd;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+

@@ -9,20 +9,32 @@
 </head>
 
 <body onload="loadInfo()">
-<div id="info"></div>
-<form>
-    Enter the number of sale to get detailed information:<br>
-    <input type="text" id="numberOfSale"><br>
-    <input type="button" onclick="get_sale()" value="Get info">
-</form>
-<br>
-<div id="result"></div>
+    <div style="border: ridge; width: 50%; margin:0 auto;">
+        <div class="title">
+            Number of sales
+        </div>
+        <div id="numberOfSales" class="value"></div>
+        <div class="title">
+            Number of tokens
+        </div>
+        <div id="numberOfTokens" class="value"></div>
+        <div class="title">Sale information</div>
+        <form>
+            Enter the number of sale to get detailed information:<br>
+            <input type="text" id="numberOfSale" value="0">
+            <input type="button" onclick="get_sale()" value="Get info">
+        </form>
+        <div style="padding-left: 10pt">Transactin Id:</div>
+        <div class="hash">None</div>
+        <div style="padding-left: 10pt" id="amount">Amount: None</div>
+        <div style="padding-left: 10pt" id="date">Date: None</div>
+    </div>
 <script>
     function loadInfo() {
         $.get( "get_info/", function( data ) {
              if (data.status == "OK") {
-                 $("#info").html("<b>number of sales: </b>" + data.numberOfSales + "<br>" +
-                                 "<b>total number of tokens: </b>" + data.totalTokens + "<br>");
+                 $("#numberOfSales").html(data.numberOfSales);
+                 $("#numberOfTokens").html(data.totalTokens);
              } else {
                   $("#info").html("Sorry, something went wrong. Try to reload the page.")
              }
@@ -33,10 +45,9 @@
         var numberOfSale = $('#numberOfSale').val();
         $.get( "get_sale/?id=" + numberOfSale, function(data) {
              if (data.status == "OK") {
-                 $("#result").html("<b>Cool!</b><br>");
-                 $("#result").append("Some message");
-             } else {
-                  $("#info").html("<b>Wrong number of sale</b>")
+                 $(".hash").html("0xHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+                 $("#amount").html("Amount: 0.012345");
+                 $("#date").html("Date: 7.03.2016");
              }
         });
 
