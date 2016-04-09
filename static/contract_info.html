@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Waves Presale</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="contract_styles.css">
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 </head>
@@ -31,7 +31,7 @@
     </div>
 <script>
     function loadInfo() {
-        $.get( "get_info/", function( data ) {
+        $.get( "contract_get_info/", function( data ) {
              if (data.status == "OK") {
                  $("#numberOfSales").html(data.numberOfSales);
                  $("#numberOfTokens").html(data.totalTokens);
@@ -44,7 +44,7 @@
 
     function get_sale() {
         var numberOfSale = $('#numberOfSale').val();
-        $.get( "get_sale/?id=" + numberOfSale, function(data) {
+        $.get( "contract_get_sale/?id=" + numberOfSale, function(data) {
              if (data.status == "OK") {
                  $(".hash").html(data.tx_id);
                  $("#amount").html("Amount: " + data.amount);

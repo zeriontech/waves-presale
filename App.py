@@ -10,10 +10,10 @@ api = API()
 
 @app.route("/contract_info")
 def info():
-    return app.send_static_file("checker.html")
+    return app.send_static_file("contract_info.html")
 
 
-@app.route("/get_sale/")
+@app.route("/contract_get_sale/")
 def get_sale():
     try:
         id = int(request.args.get('id', -1))
@@ -42,7 +42,7 @@ def call_method(method, id):
     return api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
 
 
-@app.route("/get_info/")
+@app.route("/contract_get_info/")
 def get_info():
     tokens = "0x" + api.getMethodId("totalTokens()")
     sales = "0x" + api.getMethodId("numberOfSales()")
@@ -59,9 +59,9 @@ def get_info():
                     "totalTokens": total_tokens})
 
 
-@app.route("/styles.css")
+@app.route("/contract_styles.css")
 def styles():
-    return app.send_static_file("styles.css")
+    return app.send_static_file("contract_styles.css")
 
 
 def uint_to_bytes_string(number):
