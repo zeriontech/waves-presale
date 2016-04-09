@@ -27,6 +27,7 @@ def get_sale():
     print(mhash)
     method = "0x" + api.getMethodId("getSaleDate(bytes16)") + mhash
     response = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
+    print(response)
     amount = int("0x" + response[2:66], 0)
     date = int("0x" + response[66:], 0)
     print(amount)
@@ -56,12 +57,6 @@ def get_info():
         return jsonify({"status": "ERROR"})
     return jsonify({"status": "OK", "numberOfSales": number_of_sales,
                     "totalTokens": total_tokens})
-
-
-@app.route("/contract_styles.css")
-def styles():
-    return app.send_static_file("contract_styles.css")
-
 
 def uint_to_bytes_string(number):
     number_bytes = number.to_bytes(32, byteorder='big')
