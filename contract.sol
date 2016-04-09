@@ -3,12 +3,11 @@ contract WavesPresale {
     
     struct Sale
     {
-        bytes32 txid;   
         uint amount;
         uint date;
     }
-    
-    Sale[] public sales;
+
+    mapping (bytes16 => Sale) public sales;
     uint32 public numberOfSales;
     uint public totalTokens;
 
@@ -23,28 +22,19 @@ contract WavesPresale {
         owner = newOwner;
     }
 
-    function newSale(bytes32 txid, uint amount, uint timestamp) {
+    function newSale(bytes16 txidHash, uint amount, uint timestamp) {
         if (msg.sender != owner) return;
 
-        sales.push(Sale({
-                txid: txid,
+        sales[txidHash] = Sale({
                 amount: amount,
                 date: timestamp
-            }));
+            });
         numberOfSales += 1;
         totalTokens += amount;
     }
 
-    function getSaleTxId(uint32 num) constant returns (bytes32) {
-    	return sales[num].txid;
-    }
-
-    function getSaleAmount(uint32 num) constant returns (uint) {
-    	return sales[num].amount;
-    }
-
-    function getSaleDate(uint32 num) constant returns (uint) {
-    	return sales[num].date;
+    function getSaleDate(bytes16 txidHash) constant returns (uint, uint) {
+    	return (sales[txidHash].amount, sales[txidHash].date);
     }
 
     function () {
