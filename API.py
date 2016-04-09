@@ -64,7 +64,8 @@ class API:
     def getInfo(self, from_address, to_address, data):
         response = self.api_request("eth_call", [{"from": from_address,
                                                   "to": to_address,
-                                                  "data": data}])
+                                                  "data": data}, "latest"])
+        print(response)
         return APIResponse({"data": response.response_dict["result"]})
 
     #tested on samples
