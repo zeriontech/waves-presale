@@ -21,17 +21,11 @@ def get_sale():
         return jsonify({"status": "OK",
                         "amount": "Error",
                         "date": "length of TxID should be equal to 64 symbols"})
-    print("txid: " + str(len(txid)))
-    print(str.encode(txid))
     mhash = hashlib.md5(str.encode(txid)).hexdigest().upper()
-    print(mhash)
     method = "0x" + api.getMethodId("getSaleDate(bytes16)") + mhash
     response = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
-    print(response)
     amount = int("0x" + response[2:66], 0)
     date = int("0x" + response[66:], 0)
-    print(amount)
-    print(date)
     return jsonify({"status": "OK",
                     "amount": amount / 10**8,
                     "date": datetime.fromtimestamp(date)})
