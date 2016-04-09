@@ -65,7 +65,6 @@ class API:
         response = self.api_request("eth_call", [{"from": from_address,
                                                   "to": to_address,
                                                   "data": data}, "latest"])
-        print(response)
         return APIResponse({"data": response.response_dict["result"]})
 
     #tested on samples

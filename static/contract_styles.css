@@ -1,11 +1,15 @@
 form {
-  text-align: center;
+    text-align: center;
+    margin-bottom: 5pt;
+    margin-top: 5pt;
 }
 
 .title {
-    height: 16pt;
+    height: 18pt;
+    line-height: 18pt;
     padding-left: 20pt;
-    background-color: lightgray;
+    color: white;
+    background-color: #0EB1F2;
 }
 
 .value {

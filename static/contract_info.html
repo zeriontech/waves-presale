@@ -9,7 +9,7 @@
 </head>
 
 <body onload="loadInfo()">
-    <div style="border: ridge; width: 50%; margin:0 auto;">
+    <div style="border: 2pt ridge #0EB1F2; border-radius: 5pt; width: 50%; margin:0 auto;">
         <div class="title">
             Total number of sales
         </div>
@@ -21,13 +21,11 @@
         <div class="title">Sale information</div>
         <form>
             Enter the TxID of sale to get detailed information:<br>
-            <input type="text" id="numberOfSale" value="0">
-            <input type="button" onclick="get_sale()" value="Get info">
+            <input type="text" id="numberOfSale" value="">
+            <input type="button" style="background: #0EB1F2; color: white; border: 1pt solid white; border-radius: 2pt" onclick="get_sale()" value="Get info">
         </form>
-        <div style="padding-left: 10pt">Transaction Id:</div>
-        <div class="hash">None</div>
-        <div style="padding-left: 10pt" id="amount">Amount: None</div>
-        <div style="padding-left: 10pt" id="date">Date: None</div>
+        <div style="padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;" id="amount">Amount: None</div>
+        <div style="padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;" id="date">Date: None</div>
     </div>
 <script>
     function loadInfo() {
@@ -39,14 +37,12 @@
                   $("#info").html("Sorry, something went wrong. Try to reload the page.")
              }
         });
-        get_sale();
     }
 
     function get_sale() {
         var numberOfSale = $('#numberOfSale').val();
         $.get( "contract_get_sale/?id=" + numberOfSale, function(data) {
              if (data.status == "OK") {
-                 $(".hash").html(data.tx_id);
                  $("#amount").html("Amount: " + data.amount);
                  $("#date").html("Date: " + data.date);
              }

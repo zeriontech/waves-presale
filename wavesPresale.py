@@ -2,6 +2,7 @@
 from API import API
 from addresses import BASE_ADDRESS, CONTRACT_ADDRESS
 import binascii
+import hashlib
 import sys
 
 api = API()
@@ -11,10 +12,11 @@ def logSale(bitcoin_tx_id, amount, timestamp):
     if len(bitcoin_tx_id) != 64:
         print('TX Id must contain 64 symbols')
         return
-    definition = "newSale(bytes32,uint256,uint256)"
+    definition = "newSale(bytes16,uint256,uint256)"
     method_id = api.getMethodId(definition)
     amount = abs(int(amount * (10 ** 8)))
-    data = "0x" + method_id + bitcoin_tx_id + uint_to_bytes_string(amount)\
+    mhash = hashlib.md5(str.encode(bitcoin_tx_id)).hexdigest().upper() + "0" * 32
+    data = "0x" + method_id + mhash + uint_to_bytes_string(amount)\
            + uint_to_bytes_string(timestamp)
     gas_price = hex(api.getGasPrice()["result"])
     response = api.send_transaction(BASE_ADDRESS, CONTRACT_ADDRESS,

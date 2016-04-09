@@ -3,6 +3,7 @@ from API import API
 from addresses import BASE_ADDRESS, CONTRACT_ADDRESS
 from datetime import datetime
 import binascii
+import hashlib
 
 app = Flask(__name__)
 api = API()
@@ -15,26 +16,24 @@ def info():
 
 @app.route("/contract_get_sale/")
 def get_sale():
-    try:
-        id = int(request.args.get('id', -1))
-    except ValueError:
-        return jsonify({"status": "OK", "tx_id": "None", "amount": "None", "date": "None"})
-    if id < 0:
-        return jsonify({"status": "OK", "tx_id": "None", "amount": "None", "date": "None"})
-    num_of_sales_method = "0x" + api.getMethodId("numberOfSales()")
-    num_of_sales = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, num_of_sales_method)["data"]
-    num_of_sales = int(num_of_sales, 0)
-    print(id, num_of_sales)
-    if id >= num_of_sales:
-        return jsonify({"status": "OK", "tx_id": "None", "amount": "None", "date": "None"})
-    tx_id = call_method("getSaleTxId(uint32)", id)
-    amount = call_method("getSaleAmount(uint32)", id)
-    date = call_method("getSaleDate(uint32)", id)
-    print(tx_id, amount, date)
+    txid = request.args.get('id', "")
+    if len(txid) != 64:
+        return jsonify({"status": "OK",
+                        "amount": "Error",
+                        "date": "length of TxID should be equal to 64 symbols"})
+    print("txid: " + str(len(txid)))
+    print(str.encode(txid))
+    mhash = hashlib.md5(str.encode(txid)).hexdigest().upper()
+    print(mhash)
+    method = "0x" + api.getMethodId("getSaleDate(bytes16)") + mhash
+    response = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
+    amount = int("0x" + response[2:66], 0)
+    date = int("0x" + response[66:], 0)
+    print(amount)
+    print(date)
     return jsonify({"status": "OK",
-                    "tx_id": tx_id,
-                    "amount": int(amount, 0) / 10**8,
-                    "date": datetime.fromtimestamp(int(date, 0))})
+                    "amount": amount / 10**8,
+                    "date": datetime.fromtimestamp(date)})
 
 
 def call_method(method, id):
@@ -69,5 +68,4 @@ def uint_to_bytes_string(number):
     return str(binascii.b2a_hex(number_bytes), 'ascii')
 
 if __name__ == "__main__":
-    app.debug = True
     app.run(host="0.0.0.0", port=8000)
