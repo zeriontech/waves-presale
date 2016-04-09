@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.4
 from API import API
-from configs import BASE_ADDRESS, CONTRACT_ADDRESS
+from addresses import BASE_ADDRESS, CONTRACT_ADDRESS
 import binascii
 import sys
 

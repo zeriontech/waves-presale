@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from API import API
-from configs import BASE_ADDRESS, CONTRACT_ADDRESS
+from addresses import BASE_ADDRESS, CONTRACT_ADDRESS
 from datetime import datetime
 import binascii
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 api = API()
 
 
-@app.route("/")
+@app.route("/contract_info")
 def info():
     return app.send_static_file("checker.html")
 
@@ -27,14 +27,19 @@ def get_sale():
     print(id, num_of_sales)
     if id >= num_of_sales:
         return jsonify({"status": "OK", "tx_id": "None", "amount": "None", "date": "None"})
-    tx_id_method = "0x" + api.getMethodId("getSaleTxId(uint32)") + uint_to_bytes_string(id)
-    tx_id = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, tx_id_method)["data"]
-    amount_method = "0x" + api.getMethodId("getSaleAmount(uint32)") + uint_to_bytes_string(id)
-    amount = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, amount_method)["data"]
-    date_method = "0x" + api.getMethodId("getSaleDate(uint32)") + uint_to_bytes_string(id)
-    date = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, date_method)["data"]
+    tx_id = call_method("getSaleTxId(uint32)", id)
+    amount = call_method("getSaleAmount(uint32)", id)
+    date = call_method("getSaleDate(uint32)", id)
     print(tx_id, amount, date)
-    return jsonify({"status": "OK", "tx_id": tx_id, "amount": int(amount, 0) / 10**8, "date": datetime.fromtimestamp(int(date, 0))})
+    return jsonify({"status": "OK",
+                    "tx_id": tx_id,
+                    "amount": int(amount, 0) / 10**8,
+                    "date": datetime.fromtimestamp(int(date, 0))})
+
+
+def call_method(method, id):
+    method = "0x" + api.getMethodId(method) + uint_to_bytes_string(id)
+    return api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
 
 
 @app.route("/get_info/")
@@ -64,4 +69,5 @@ def uint_to_bytes_string(number):
     return str(binascii.b2a_hex(number_bytes), 'ascii')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.debug = True
+    app.run(host="0.0.0.0", port=8000)

@@ -1,5 +1,6 @@
 import json
 
+
 class APIResponse:
     def __init__(self, response_dict={}, status=0, error=""):
         self.response_dict = response_dict
