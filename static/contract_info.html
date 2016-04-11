@@ -5,6 +5,7 @@
     <title>Waves Presale</title>
     <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <style>
         form {
             text-align: center;
@@ -27,27 +28,37 @@
             font-size: large;
         }
 
-        .hash {
-            width: auto;
-            height:26pt;
-            line-height: 20pt;
-            padding: 2pt;
-            border: 1px solid #bed5cd;
-            overflow-x: scroll;
-            overflow-y: hidden;
-            white-space: nowrap;
+        h1 {
+            font-family: Roboto, serif;
+            font-weight: 100;
+            text-align: center;
         }
+
+        h4 {
+            font-family: Roboto, serif;
+            font-weight: 100;
+            text-align: center;
+        }
+
+        a {
+            color: #0EB1F2;
+        }
+
     </style>
 </head>
 
 <body onload="loadInfo()">
+    <center><img src="http://i.imgur.com/W4SAxfX.png?1" style="width: 160pt; height: 107pt;"></center>
+    <h4>Ethereum contract address:
+        <a href="https://etherscan.io/address/0xbD37672116c2F4C14BA5a23921BDC57860e64Aa0#code">
+        0xbD37672116c2F4C14BA5a23921BDC57860e64Aa0</a></h4>
     <div style="border: 2pt ridge #0EB1F2; border-radius: 5pt; width: 50%; margin:0 auto;">
         <div class="title">
             Total number of sales
         </div>
         <div id="numberOfSales" class="value"></div>
         <div class="title">
-            Total number of tokens
+            Total amount of BTC
         </div>
         <div id="numberOfTokens" class="value"></div>
         <div class="title">Sale information</div>
@@ -59,6 +70,7 @@
         <div style="padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;" id="amount">Amount: None</div>
         <div style="padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;" id="date">Date: None</div>
     </div>
+    <h4>Powered by <a href="https://etherionlab.github.io/" style="text-decoration: none;">[ etherion lab ]</a></h4>
 <script>
     function loadInfo() {
         $.get( "contract_get_info/", function( data ) {
