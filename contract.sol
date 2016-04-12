@@ -25,12 +25,14 @@ contract WavesPresale {
     function newSale(bytes16 txidHash, uint amount, uint timestamp) {
         if (msg.sender != owner) return;
 
-        sales[txidHash] = Sale({
-                amount: amount,
-                date: timestamp
-            });
-        numberOfSales += 1;
-        totalTokens += amount;
+        if sales[txidHash].date == 0 {
+            sales[txidHash] = Sale({
+                    amount: amount,
+                    date: timestamp
+                });
+            numberOfSales += 1;
+            totalTokens += amount;
+        }
     }
 
     function getSaleDate(bytes16 txidHash) constant returns (uint, uint) {
