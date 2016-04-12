@@ -32,6 +32,8 @@ contract WavesPresale {
                 });
             numberOfSales += 1;
             totalTokens += amount;
+        } else {
+            throw;
         }
     }
 
