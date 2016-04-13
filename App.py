@@ -22,22 +22,25 @@ def get_sale():
                         "amount": "Error",
                         "date": "length of TxID should be equal to 64 symbols"})
     mhash = hashlib.md5(str.encode(txid)).hexdigest().upper()
-    method = "0x" + api.getMethodId("getSaleDate(bytes16)") + mhash
-    response = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
-    amount = int("0x" + response[2:66], 0)
-    date = int("0x" + response[66:], 0)
-    if date == 0:
+    method = "0x" + api.getMethodId("getNumOfSalesWithSameId(bytes16)") + mhash
+    number_of_txs = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
+    number_of_txs = int(number_of_txs, 0)
+    amounts = []
+    dates = []
+    for i in range(number_of_txs):
+        method = "0x" + api.getMethodId("getSaleDate(bytes16,uint256)") + mhash + "0" * 32 + uint_to_bytes_string(i)
+        tx = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
+        amounts.append(int("0x" + tx[2:66], 0))
+        dates.append(int("0x" + tx[66:], 0))
+    if len(dates) == 0:
         return jsonify({"status": "OK",
                         "amount": "None",
                         "date": "Hash not found"})
+    amounts = list(map(lambda amount: amount / 10**8, amounts))
+    dates = list(map(lambda date: datetime.fromtimestamp(date), dates))
     return jsonify({"status": "OK",
-                    "amount": amount / 10**8,
-                    "date": datetime.fromtimestamp(date)})
-
-
-def call_method(method, id):
-    method = "0x" + api.getMethodId(method) + uint_to_bytes_string(id)
-    return api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
+                    "amount": amounts,
+                    "date": dates})
 
 
 @app.route("/contract_get_info/")
@@ -56,9 +59,11 @@ def get_info():
     return jsonify({"status": "OK", "numberOfSales": number_of_sales,
                     "totalTokens": total_tokens})
 
+
 def uint_to_bytes_string(number):
     number_bytes = number.to_bytes(32, byteorder='big')
     return str(binascii.b2a_hex(number_bytes), 'ascii')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
+

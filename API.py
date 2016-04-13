@@ -79,6 +79,5 @@ class API:
                                                              "gasPrice": gasPrice,
                                                              "value": value,
                                                              "data": data}])
-        print(response)
         ans = APIResponse({"hash": response.response_dict["result"]})
         return ans

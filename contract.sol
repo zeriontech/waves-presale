@@ -7,7 +7,7 @@ contract WavesPresale {
         uint date;
     }
 
-    mapping (bytes16 => Sale) public sales;
+    mapping (bytes16 => Sale[]) public sales;
     uint32 public numberOfSales;
     uint public totalTokens;
 
@@ -25,20 +25,20 @@ contract WavesPresale {
     function newSale(bytes16 txidHash, uint amount, uint timestamp) {
         if (msg.sender != owner) return;
 
-        if (sales[txidHash].date == 0) {
-            sales[txidHash] = Sale({
+        sales[txidHash].push(Sale({
                     amount: amount,
                     date: timestamp
-                });
-            numberOfSales += 1;
-            totalTokens += amount;
-        } else {
-            throw;
-        }
+                }));
+        numberOfSales += 1;
+        totalTokens += amount;
     }
 
-    function getSaleDate(bytes16 txidHash) constant returns (uint, uint) {
-    	return (sales[txidHash].amount, sales[txidHash].date);
+    function getNumOfSalesWithSameId(bytes16 txidHash) constant returns (uint) {
+        return sales[txidHash].length;
+    }
+
+    function getSaleDate(bytes16 txidHash, uint num) constant returns (uint, uint) {
+    	return (sales[txidHash][num].amount, sales[txidHash][num].date);
     }
 
     function () {

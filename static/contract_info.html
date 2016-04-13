@@ -50,8 +50,8 @@
 <body onload="loadInfo()">
     <center><a href="https://ico.wavesplatform.com/"><img src="http://i.imgur.com/W4SAxfX.png?1" style="width: 160pt; height: 107pt;"></a></center>
     <h4>Ethereum contract address:
-        <a href="https://etherscan.io/address/0x5Bc7e5694ee5D6ea32A0dA36EFb56A177190A53a#code">
-        0x5Bc7e5694ee5D6ea32A0dA36EFb56A177190A53a</a></h4>
+        <a href="https://etherscan.io/address/0xAE506bb28Ed79b29c6968Ab527d1eFdc5f399331#code">
+       0xAE506bb28Ed79b29c6968Ab527d1eFdc5f399331</a></h4>
     <div style="border: 2pt ridge #0EB1F2; border-radius: 5pt; width: 50%; margin:0 auto;">
         <div class="title">
             Total number of sales
@@ -67,8 +67,7 @@
             <input type="text" id="numberOfSale" value="">
             <input type="button" style="background: #0EB1F2; color: white; border: 1pt solid white; border-radius: 2pt" onclick="get_sale()" value="Get info">
         </form>
-        <div style="padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;" id="amount">Amount: None</div>
-        <div style="padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;" id="date">Date: None</div>
+        <div id="saleInfo"></div>
     </div>
     <h4>Powered by <a href="https://etherionlab.github.io/" style="text-decoration: none;">[ etherion lab ]</a></h4>
 <script>
@@ -86,9 +85,22 @@
     function get_sale() {
         var numberOfSale = $('#numberOfSale').val();
         $.get( "contract_get_sale/?id=" + numberOfSale, function(data) {
-             if (data.status == "OK") {
-                 $("#amount").html("Amount: " + data.amount);
-                 $("#date").html("Date: " + data.date);
+             $("#saleInfo").html("");
+             if (data.amount instanceof Array) {
+                 for (i = 0; i < data.amount.length; i++) {
+                     console.log(i);
+                     $("#saleInfo").append("<div style=\"padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;\">" +
+                             "Amount: " + data.amount[i] + "</div>");
+                     console.log("append amount");
+                     $("#saleInfo").append("<div style=\"padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;\">" +
+                             "Date: " + data.date[i] + "</div>");
+                     console.log("append date");
+                 }
+             } else {
+                 $("#saleInfo").append("<div style=\"padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;\">" +
+                             "Amount: " + data.amount + "</div>");
+                 $("#saleInfo").append("<div style=\"padding-left: 10pt; margin-top: 2pt; margin-bottom: 2pt;\">" +
+                         "Date: " + data.date + "</div>");
              }
         });
 
