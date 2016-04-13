@@ -26,6 +26,10 @@ def get_sale():
     response = api.getInfo(BASE_ADDRESS, CONTRACT_ADDRESS, method)["data"]
     amount = int("0x" + response[2:66], 0)
     date = int("0x" + response[66:], 0)
+    if date == 0:
+        return jsonify({"status": "OK",
+                        "amount": "None",
+                        "date": "Hash not found"})
     return jsonify({"status": "OK",
                     "amount": amount / 10**8,
                     "date": datetime.fromtimestamp(date)})

@@ -12,6 +12,8 @@ def logSale(bitcoin_tx_id, amount, timestamp):
     if len(bitcoin_tx_id) != 64:
         print('TX Id must contain 64 symbols')
         return
+    with open("sales.log", "a") as logfile:
+        logfile.write(str(bitcoin_tx_id) + "\n")
     definition = "newSale(bytes16,uint256,uint256)"
     method_id = api.getMethodId(definition)
     amount = abs(int(amount * (10 ** 8)))
