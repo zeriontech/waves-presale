@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <script src="Chart.js"></script>
+    <meta charset="UTF-8">
+    <title>Waves ICO Statistics</title>
+    <style>
+        #parent {
+            width: 100%;
+            height: auto;
+            overflow:hidden;
+            position:relative;
+            display:table;
+        }
+        .left {
+            width: 40%;
+            height: auto;
+            display:table-cell;
+        }
+        .right {
+            width: 40%;
+            height:auto;
+            display:table-cell;
+        }
+        h1 {
+            font-family: Roboto, serif;
+            font-weight: 100;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: Roboto, serif;
+            font-weight: 100;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<table style="width: 100%; height: 100%">
+    <tr>
+        <td>
+        <div>
+            <h1>Waves ICO Statistics</h1>
+            <canvas id="DayChart"></canvas>
+            <h2 id="total">Total number of sales:</h2>
+        </div>
+        </td>
+        <td>
+        <div>
+            <div style="text-align: center;"><a href="https://ico.wavesplatform.com/"><img src="http://i.imgur.com/W4SAxfX.png?1" style="width: 160pt; height: 107pt;"></a></div>
+            <h2>Top 10 Transactions</h2>
+            <canvas id="TopPieChart" height="250pt"></canvas>
+        </div>
+        </td>
+    </tr>
+</table>
+</body>
+<script>
+    var ctx1 = $("#DayChart");
+    var ctx2 = $("#TopPieChart");
+    var total_txs = $("#total");
+    $.get("stat_by_day", function(data) {
+        var mData = [];
+        var mLabels = [];
+        for (var key in data) {
+            mData.push(data[key]);
+            mLabels.push(key)
+        }
+        var myChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: mLabels,
+            datasets: [{
+                label: 'Amount (BTC)',
+                data: mData,
+                backgroundColor: "#2FB0D5"
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+        });
+    });
+    $.get("top_10", function(data) {
+        console.log(data);
+        var mData = [];
+        var mLabels = ["Top 1", "Top 2", "Top 3", "Top 4", "Top 5", "Top 6",
+                       "Top 7", "Top 8", "Top 9", "Top 10", "Others"];
+        for (var key in mLabels) {
+            mData.push(data[mLabels[key]]["amount"]);
+        }
+        var myPieChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: mLabels,
+                datasets: [{
+                    label: 'Top 10',
+                    data: mData,
+                    backgroundColor: [
+                        "#E6193C",
+                        "#2FB0D5",
+                        "#E0C952",
+                        "#26D926",
+                        "#D4F7F1",
+                        "#083691",
+                        "#9966FF",
+                        "#CF47EB",
+                        "#FFCE56",
+                        "#FF6384",
+                        "#7DE88F"
+                    ],
+                    hoverBackgroundColor: [
+                        "#AA193C",
+                        "#00B0D5",
+                        "#AAC952",
+                        "#00D926",
+                        "#AAF7F1",
+                        "#003691",
+                        "#6666FF",
+                        "#AA47EB",
+                        "#BBCE56",
+                        "#BB6384",
+                        "#55E88F"
+                    ]
+                }]
+            }
+        });
+});
+    $.get("contract_get_info/", function(data) {
+        total_txs.text("Total number of sales: " + data.numberOfSales);
+    });
+</script>
+</html>

@@ -14,6 +14,16 @@ def info():
     return app.send_static_file("contract_info.html")
 
 
+@app.route("/contract_stat")
+def stat():
+    return app.send_static_file("contract_statistics.html")
+
+
+@app.route("/Chart.js")
+def chart():
+    return app.send_static_file("Chart.js")
+
+
 @app.route("/contract_get_sale/")
 def get_sale():
     txid = request.args.get('id', "")
@@ -43,6 +53,26 @@ def get_sale():
                     "date": dates})
 
 
+@app.route("/stat_by_day")
+def stat_by_day():
+    with open("Statistics/info_by_day.txt") as f:
+        info = list(map(lambda x: x.split(), f.readlines()))
+
+    return jsonify(info[1:])
+
+
+@app.route("/top_10")
+def stat_top_ten():
+    with open("Statistics/top.txt") as f:
+        info = list(map(lambda x: x.split(), f.readlines()))
+    data = {}
+    for i, x in enumerate(info):
+        if i == 10:
+            data["Others"] = {"amount": x[0]}
+        else:
+            data["Top {}".format(i+1)] = {"amount": x[1], "date": x[2], "time": x[3]}
+    return jsonify(data)
+
 @app.route("/contract_get_info/")
 def get_info():
     tokens = "0x" + api.getMethodId("totalTokens()")
@@ -65,5 +95,5 @@ def uint_to_bytes_string(number):
     return str(binascii.b2a_hex(number_bytes), 'ascii')
 
 if __name__ == "__main__":
+    app.debug = True
     app.run(host="0.0.0.0", port=8000)
-
